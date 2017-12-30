@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <style type="text/css">
+      html,body{overflow: hidden;}
+    </style>
+  <canvas id="canvas" width="1920" height="1080"></canvas>
+  <script type="text/javascript">
+    var startDate = 0;
+    var nowDate = 0;
+    var timer;
+    var mode = -1;//タイマーをスットップから開始する
+    function cntStart() {
+      startDate = Date.now();
+      timer = setInterval('show()', 16);
+    }
+    function cntStop() {
+      clearInterval(timer);
+    }
+  
+    function show() {
+      nowDate= Date.now();
+      var ctx = document.getElementById("canvas").getContext("2d");
+      var passms = nowDate-startDate;
+      var msec = passms%1000;
+      var sec = Math.floor(passms/1000);
+      var min = Math.floor(sec/60);
+      sec = sec%60;
+      min = min%=60;
+      console.log(passms);
+      var txt = ('00'+min).slice(-2)+':'+('00'+sec).slice(-2)+'.'+('000'+msec).slice(-3);
+      ctx.font = "40px Arial";
+      ctx.fillStyle = "0x000000";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillText(txt,10,50);
+    }
+  
+    document.onkeydown = function (e){
+      console.log(e.key);
+      if (e.key === " ") {
+        mode *= (-1);
+        console.log(mode);
+      }
+      if (mode === 1) {
+        cntStart();
+      }else if (mode === -1) {
+        cntStop();
+      }
+    };
+      
+    </script>
+</body>
+</html>
