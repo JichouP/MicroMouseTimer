@@ -10,12 +10,13 @@
     <style type="text/css">
       html,body{overflow: hidden;}
     </style>
+  
   <canvas id="canvas" width="1920" height="1080"></canvas>
   <script type="text/javascript">
     var startDate = 0;
     var nowDate = 0;
     var timer;
-    var mode = -1;//タイマーをスットップから開始する
+    var mode = -1;//タイマーをストップから開始する
     function cntStart() {
       startDate = Date.now();
       timer = setInterval('show()', 16);
@@ -23,8 +24,12 @@
     function cntStop() {
       clearInterval(timer);
     }
-  
+    
     function show() {
+      //画面サイズ取得
+      var screenWidth = window.innerWidth;
+      var screenHeight = window.innerHeight;
+      //経過時間取得
       nowDate= Date.now();
       var ctx = document.getElementById("canvas").getContext("2d");
       var passms = nowDate-startDate;
@@ -35,12 +40,19 @@
       min = min%=60;
       console.log(passms);
       var txt = ('00'+min).slice(-2)+':'+('00'+sec).slice(-2)+'.'+('000'+msec).slice(-3);
-      ctx.font = "40px Arial";
-      ctx.fillStyle = "0x000000";
+      //書式設定
+      ctx.textAlign = 'center';
+      ctx.font = "250px Verdana";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillText(txt,10,50);
+      ctx.fillStyle = 'rgb(30,30,200)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgb(255, 255, 255)";
+      ctx.fillText(txt,screenWidth/2,screenHeight*2/5);
     }
-  
+    //ウィンドウをリサイズしたらそれに合わせて随時描画する
+    window.onresize = show;
+    
+    //キーボード入力を受け付ける
     document.onkeydown = function (e){
       console.log(e.key);
       if (e.key === " ") {
